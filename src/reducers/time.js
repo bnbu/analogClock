@@ -1,4 +1,4 @@
-import * as timeAction from '../action/time';
+import * as timeAction from '../actions/time';
 
 const initState = {
     hour: new Date(Date.now()).getHours(),

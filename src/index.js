@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './components/App';
+import Clock from './components/Clock';
 import { Provider } from 'react-redux'
 import createStore from './store';
 import reducers from './reducers'
@@ -11,6 +11,6 @@ const store = createStore(reducers);
 
 root.render(
   <Provider store={store}>
-    <App />
+    <Clock />
   </Provider>
 );

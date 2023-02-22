@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import './App.css';
-import * as timeAction from '../action/time'
+import './Clock.css';
+import * as timeAction from '../actions/time'
 import { useEffect, useRef } from 'react';
 
 const useInterval = (callback, delay) => {
@@ -20,8 +20,8 @@ const useInterval = (callback, delay) => {
     }, [delay]);
 }
 
-function App(props) {
-    const { storeHour, storeMinute, storeSecond, storeReset, storeSetHour, storeSetMinute, storeSetSecond, storeIncreaseHour, storeIncreaseMinute, storeIncreaseSecond } = props;
+function Clock(props) {
+    const { storeHour, storeMinute, storeSecond, storeSetHour, storeSetMinute, storeSetSecond, storeIncreaseHour, storeIncreaseMinute, storeIncreaseSecond } = props;
     let setTimer = () => {
         if (storeSecond < 59) storeIncreaseSecond();
         else {
@@ -57,7 +57,7 @@ function App(props) {
         hands[0].style.transform = "rotate(" + ((storeHour % 12) / 12 + 0.5) + "turn)";
         hands[1].style.transform = "rotate(" + ((storeMinute % 60) / 60 + 0.5) + "turn)";
         hands[2].style.transform = "rotate(" + ((storeSecond % 60) / 60 + 0.5) + "turn)";
-    }, [storeSecond])
+    }, [storeHour, storeMinute, storeSecond])
     
     return (
         <div>
@@ -66,6 +66,11 @@ function App(props) {
                     <div className="hour hand"></div>
                     <div className="minute hand"></div>
                     <div className="second hand"></div>
+                    <div className="center"></div>
+                    <div className="position N"></div>
+                    <div className="position S"></div>
+                    <div className="position W"></div>
+                    <div className="position E"></div>
                 </div>
             </div>
             <div className="text">
@@ -91,4 +96,4 @@ const mapDispatchToProps = (dispatch) => ({
     storeReset: () => dispatch(timeAction.reset())
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(Clock);
