@@ -57,9 +57,6 @@ function App(props) {
         hands[0].style.transform = "rotate(" + ((storeHour % 12) / 12 + 0.5) + "turn)";
         hands[1].style.transform = "rotate(" + ((storeMinute % 60) / 60 + 0.5) + "turn)";
         hands[2].style.transform = "rotate(" + ((storeSecond % 60) / 60 + 0.5) + "turn)";
-
-        console.log((storeHour % 12) / 12 + 0.5);
-        console.log((storeMinute % 60) / 60 + 0.5);
     }, [storeSecond])
     
     return (
