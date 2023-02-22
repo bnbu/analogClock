@@ -37,20 +37,41 @@ function App(props) {
 
     useInterval(setTimer, 1000);
     useEffect(() => {
+        window.addEventListener("mousemove", (e) => {
+            let maxWidth = document.getElementById("root").clientWidth;
+            let width = document.getElementsByClassName("text")[0].clientWidth;
+            let left = (e.clientX + width > maxWidth ? maxWidth - width : e.clientX);
+            document.getElementsByClassName("text")[0].style.left = left + "px";
+            document.getElementsByClassName("text")[0].style.bottom = (window.innerHeight - e.clientY) + "px";
+        });
+
+        document.getElementsByClassName("container")[0].addEventListener("mouseover", (e) => {
+            document.getElementsByClassName("text")[0].style.display = "block";
+        })
+        document.getElementsByClassName("container")[0].addEventListener("mouseout", (e) => {
+            document.getElementsByClassName("text")[0].style.display = "none";
+        })
+    }, [])
+    useEffect(() => {
         let hands = document.getElementsByClassName("hand");
         hands[0].style.transform = "rotate(" + ((storeHour % 12) / 12 + 0.5) + "turn)";
         hands[1].style.transform = "rotate(" + ((storeMinute % 60) / 60 + 0.5) + "turn)";
         hands[2].style.transform = "rotate(" + ((storeSecond % 60) / 60 + 0.5) + "turn)";
+
+        console.log((storeHour % 12) / 12 + 0.5);
+        console.log((storeMinute % 60) / 60 + 0.5);
     }, [storeSecond])
     
     return (
-        <div class="container">
-            <div class="clock">
-                <div class="hour hand"></div>
-                <div class="minute hand"></div>
-                <div class="second hand"></div>
+        <div>
+            <div className="container">
+                <div className="clock">
+                    <div className="hour hand"></div>
+                    <div className="minute hand"></div>
+                    <div className="second hand"></div>
+                </div>
             </div>
-            <div class="text">
+            <div className="text">
                 {storeHour >= 10 ? storeHour : "0" + storeHour} : {storeMinute >= 10 ? storeMinute : "0" + storeMinute} : {storeSecond >= 10 ? storeSecond : "0" + storeSecond}
             </div>
         </div>
