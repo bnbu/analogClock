@@ -1,9 +1,9 @@
 import * as timeAction from '../action/time';
 
 const initState = {
-    hour: 0,
-    minute: 0,
-    second: 0
+    hour: new Date(Date.now()).getHours(),
+    minute: new Date(Date.now()).getMinutes(),
+    second: new Date(Date.now()).getSeconds()
 }
 
 const reducers = (state = initState, action) => {

@@ -1,17 +1,58 @@
 import { connect } from 'react-redux';
 import './App.css';
 import * as timeAction from '../action/time'
+import { useEffect, useRef } from 'react';
+
+const useInterval = (callback, delay) => {
+    const savedCallback = useRef();
+
+    useEffect(() => {
+        savedCallback.current = callback;
+    });
+
+    useEffect(() => {
+        const tick = () => {
+            savedCallback.current();
+        }
+
+        const timerId = setInterval(tick, delay);
+        return () => clearInterval(timerId);
+    }, [delay]);
+}
 
 function App(props) {
-    const { storeHour, storeMinute, storeSecond, storeReset } = props;
+    const { storeHour, storeMinute, storeSecond, storeReset, storeSetHour, storeSetMinute, storeSetSecond, storeIncreaseHour, storeIncreaseMinute, storeIncreaseSecond } = props;
+    let setTimer = () => {
+        if (storeSecond < 59) storeIncreaseSecond();
+        else {
+            storeSetSecond(0);
+            if (storeMinute < 59) storeIncreaseMinute();
+            else {
+                storeSetMinute(0);
+                if (storeHour < 23) storeIncreaseHour();
+                else storeSetHour(0);
+            }
+        }
+    }
+
+    useInterval(setTimer, 1000);
+    useEffect(() => {
+        let hands = document.getElementsByClassName("hand");
+        hands[0].style.transform = "rotate(" + ((storeHour % 12) / 12 + 0.5) + "turn)";
+        hands[1].style.transform = "rotate(" + ((storeMinute % 60) / 60 + 0.5) + "turn)";
+        hands[2].style.transform = "rotate(" + ((storeSecond % 60) / 60 + 0.5) + "turn)";
+    }, [storeSecond])
+    
     return (
-        <div>
-            <div>
-            {storeHour}:{storeMinute}:{storeSecond}
+        <div class="container">
+            <div class="clock">
+                <div class="hour hand"></div>
+                <div class="minute hand"></div>
+                <div class="second hand"></div>
             </div>
-            <button onClick={storeReset}>
-                리셋
-            </button>
+            <div class="text">
+                {storeHour >= 10 ? storeHour : "0" + storeHour} : {storeMinute >= 10 ? storeMinute : "0" + storeMinute} : {storeSecond >= 10 ? storeSecond : "0" + storeSecond}
+            </div>
         </div>
     )
 }
